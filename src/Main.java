@@ -8,7 +8,7 @@ public class Main {
 
         XMLMidiInformation midiInformation = new XMLMidiInformation();
         midiInformation.parseXMLFile("air.xml");
-
+        /*
         for(MidiXMLData data : midiInformation.getPartInformation()){
             System.out.println("Part: " +data.getPart());
             System.out.println("Measure: "+ data.getMeasure());
@@ -16,7 +16,7 @@ public class Main {
             System.out.println("Note: "+ data.getNote());
             System.out.println("Duration: "+ data.getDuration());
         }
-
+    */
 
     }
 }

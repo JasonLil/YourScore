@@ -37,11 +37,18 @@ public class XMLMidiInformation {
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             ScorePartwise XMLPartwise = (ScorePartwise) unmarshaller.unmarshal(source);
             int part_num =0;
-            XMLPartwise.getPartList().getScorePart().
+
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;
+
                 for (ScorePartwise.Part.Measure measure : part.getMeasure()) {
+
                     for (Object o : measure.getNoteOrBackupOrForward()) {
+                        if(o.getClass().equals(Attributes.class)){
+                            Attributes attributes = (Attributes)o;
+                            System.out.println("Part Num: "+part_num);
+                            System.out.println(attributes.getKey().size());
+                        }
                         if (o.getClass().equals(Note.class)) {
                             Note n = (Note) o;
                             Integer octave = null;
