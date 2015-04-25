@@ -31,12 +31,13 @@ public class XMLMidiInformation {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
             XMLReader xmlReader = spf.newSAXParser().getXMLReader();
-            InputSource inputSource = new InputSource(new FileReader("uptownFunk.xml"));
+            InputSource inputSource = new InputSource(new FileReader(filename));
             SAXSource source = new SAXSource(xmlReader, inputSource);
 
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             ScorePartwise XMLPartwise = (ScorePartwise) unmarshaller.unmarshal(source);
             int part_num =0;
+            XMLPartwise.getPartList().getScorePart().
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;
                 for (ScorePartwise.Part.Measure measure : part.getMeasure()) {
