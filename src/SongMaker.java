@@ -7,8 +7,8 @@ import java.util.HashMap;
  */
 public class SongMaker {
     private Sequence sequence;
-    private static final Integer[][] MidiNotes;
-    private static final Integer[] onCodes;
+    private static final Integer[][] MidiNotes; //MidiNotes is based off of this http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm chart
+    private static final Integer[] onCodes; //on and off codes are based off of Table 2 from this page :http://www.midi.org/techspecs/midimessages.php
     private static final Integer[] offCodes;
     private static final HashMap<String,Integer> note_to_Integer;
 

@@ -20,9 +20,11 @@ import java.util.ArrayList;
  */
 public class XMLMidiInformation {
     private ArrayList<MidiXMLData> partInformation;
+    private ArrayList<MidiXMLKey> keyInformation;
 
     XMLMidiInformation(){
         this.partInformation = new ArrayList<MidiXMLData>();
+        this.keyInformation = new ArrayList<MidiXMLKey>();
     }
 
     public void parseXMLFile(String filename){
@@ -45,9 +47,15 @@ public class XMLMidiInformation {
 
                     for (Object o : measure.getNoteOrBackupOrForward()) {
                         if(o.getClass().equals(Attributes.class)){
+                            MidiXMLKey midiXMLKey = new MidiXMLKey();
                             Attributes attributes = (Attributes)o;
-                            System.out.println("Part Num: "+part_num);
-                            System.out.println(attributes.getKey().size());
+                            if(attributes.getKey().size()>0) {
+                                midiXMLKey.setKey(attributes.getKey().get(0).getFifths().intValue());
+                                midiXMLKey.setMeasure(Integer.parseInt(measure.getNumber()));
+                                midiXMLKey.setPart(part_num);
+                                this.keyInformation.add(midiXMLKey);
+                            }
+
                         }
                         if (o.getClass().equals(Note.class)) {
                             Note n = (Note) o;
@@ -103,5 +111,9 @@ public class XMLMidiInformation {
 
     public ArrayList<MidiXMLData> getPartInformation() {
         return partInformation;
+    }
+
+    public ArrayList<MidiXMLKey> getKeyInformation() {
+        return keyInformation;
     }
 }

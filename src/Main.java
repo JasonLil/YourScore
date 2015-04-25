@@ -17,6 +17,11 @@ public class Main {
             System.out.println("Duration: "+ data.getDuration());
         }
     */
+        for(MidiXMLKey midiKey : midiInformation.getKeyInformation()){
+            System.out.println(midiKey.getPart());
+            System.out.println(midiKey.getMeasure());
+            System.out.println(midiKey.getKey());
+        }
 
     }
 }
