@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args){
 
         XMLMidiInformation midiInformation = new XMLMidiInformation();
-        midiInformation.parseXMLFile("air.xml");
-        /*
+        midiInformation.parseXMLFile("topGun.xml");
+/*
         for(MidiXMLData data : midiInformation.getPartInformation()){
             System.out.println("Part: " +data.getPart());
             System.out.println("Measure: "+ data.getMeasure());
@@ -16,12 +16,16 @@ public class Main {
             System.out.println("Note: "+ data.getNote());
             System.out.println("Duration: "+ data.getDuration());
         }
-    */
+
         for(MidiXMLKey midiKey : midiInformation.getKeyInformation()){
             System.out.println(midiKey.getPart());
             System.out.println(midiKey.getMeasure());
             System.out.println(midiKey.getKey());
         }
+    */
+        SongMaker songMaker = new SongMaker(midiInformation.getKeyInformation());
+        songMaker.addParts(midiInformation.getPartInformation());
+        songMaker.startSong();
 
     }
 }

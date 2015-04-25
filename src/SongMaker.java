@@ -10,13 +10,17 @@ public class SongMaker {
     private static final Integer[][] MidiNotes; //MidiNotes is based off of this http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm chart
     private static final Integer[] onCodes; //on and off codes are based off of Table 2 from this page :http://www.midi.org/techspecs/midimessages.php
     private static final Integer[] offCodes;
-    private static final HashMap<String,Integer> note_to_Integer;
+    private HashMap<String,Integer> note_to_Integer;
+
+    private ArrayList<MidiXMLKey> keyInformation;
+    private Integer currentKeyChange; //the keyInformation has each key change for each part and currentKeyChange is the index of keyInformation that we are on
+
 
     static {
         MidiNotes = new Integer[11][12];
         int midi_num = 0;
-        for(int note=0;note<12;note++){
-            for(int oct=0; oct<11;oct++){
+        for(int oct=0;oct<11;oct++){
+            for(int note=0; note<12;note++){
                 MidiNotes[oct][note]=midi_num;
                 midi_num++;
             }
@@ -29,6 +33,14 @@ public class SongMaker {
             offCodes[num]=num+128;
         }
 
+
+    }
+
+
+    SongMaker(ArrayList<MidiXMLKey> keyInfo){
+        this.currentKeyChange = 0;
+        this.keyInformation = keyInfo;
+
         note_to_Integer = new HashMap<String, Integer>();
         note_to_Integer.put("C",0);
         note_to_Integer.put("D",2);
@@ -38,10 +50,6 @@ public class SongMaker {
         note_to_Integer.put("A",9);
         note_to_Integer.put("B",11);
 
-    }
-
-
-    SongMaker(){
         try {
             this.sequence = new Sequence(Sequence.PPQ, 4);
         }catch(InvalidMidiDataException imde){
@@ -69,6 +77,7 @@ public class SongMaker {
                 if (this.sequence != null && newPart) {
                     track = this.sequence.createTrack();
                 }
+                this.createNoteToInteger(partInfo.getPart(),partInfo.getMeasure());
 
                 if (track != null) {
                     ShortMessage on = new ShortMessage();
@@ -105,4 +114,129 @@ public class SongMaker {
         }
     }
 
+
+    public void createNoteToInteger(Integer part, Integer measure){
+        if(this.currentKeyChange<this.keyInformation.size()) {
+            if (this.keyInformation.get(this.currentKeyChange).getPart() < part) {
+                this.currentKeyChange++;//this key change comes from changing parts
+            }
+            if (this.keyInformation.get(this.currentKeyChange).getMeasure() == measure) {
+                if (this.keyInformation.get(this.currentKeyChange).getKey() == 1) {
+                    this.createFSharp();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == 2) {
+                    this.createFSharp();
+                    this.createCSharp();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == 3) {
+                    this.createFSharp();
+                    this.createCSharp();
+                    this.createGSharp();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == 4) {
+                    this.createFSharp();
+                    this.createCSharp();
+                    this.createGSharp();
+                    this.createDSharp();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == 5) {
+                    this.createFSharp();
+                    this.createCSharp();
+                    this.createGSharp();
+                    this.createDSharp();
+                    this.createASharp();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == 6) {
+                    this.createFSharp();
+                    this.createCSharp();
+                    this.createGSharp();
+                    this.createDSharp();
+                    this.createASharp();
+                    this.createESharp();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == -1) {
+                    this.createBFlat();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == -2) {
+                    this.createBFlat();
+                    this.createEFlat();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == -3) {
+                    this.createBFlat();
+                    this.createEFlat();
+                    this.createAFlat();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == -4) {
+                    this.createBFlat();
+                    this.createEFlat();
+                    this.createAFlat();
+                    this.createFFlat();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == -5) {
+                    this.createBFlat();
+                    this.createEFlat();
+                    this.createAFlat();
+                    this.createFFlat();
+                    this.createGFlat();
+                } else if (this.keyInformation.get(this.currentKeyChange).getKey() == -6) {
+                    this.createBFlat();
+                    this.createEFlat();
+                    this.createAFlat();
+                    this.createFFlat();
+                    this.createGFlat();
+                    this.createCFlat();
+                }
+                this.currentKeyChange++;//This is an actual key change
+            }
+        }
+    }
+
+    public void createCFlat(){
+        this.note_to_Integer.remove("C");
+        this.note_to_Integer.put("C",11);
+    }
+    public void createGFlat(){
+        this.note_to_Integer.remove("G");
+        this.note_to_Integer.put("G",6);
+    }
+    public void createFFlat(){
+        this.note_to_Integer.remove("F");
+        this.note_to_Integer.put("F",4);
+    }
+
+    public void createAFlat(){
+        this.note_to_Integer.remove("A");
+        this.note_to_Integer.put("A",8);
+    }
+
+    public void createBFlat(){
+        this.note_to_Integer.remove("B");
+        this.note_to_Integer.put("B",10);
+    }
+
+    public void createEFlat(){
+        this.note_to_Integer.remove("E");
+        this.note_to_Integer.put("E",3);
+    }
+
+
+    public void createFSharp(){
+        this.note_to_Integer.remove("F");
+        this.note_to_Integer.put("F",6);
+    }
+
+    public void createCSharp(){
+        this.note_to_Integer.remove("C");
+        this.note_to_Integer.put("C",1);
+    }
+
+    public void createGSharp(){
+        this.note_to_Integer.remove("G");
+        this.note_to_Integer.put("G",8);
+    }
+
+    public void createDSharp(){
+        this.note_to_Integer.remove("D");
+        this.note_to_Integer.put("D",3);
+    }
+
+    public void createASharp(){
+        this.note_to_Integer.remove("A");
+        this.note_to_Integer.put("A",10);
+    }
+
+    public void createESharp(){
+        this.note_to_Integer.remove("E");
+        this.note_to_Integer.put("E",5);
+    }
 }
