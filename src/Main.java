@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args){
 
         XMLMidiInformation midiInformation = new XMLMidiInformation();
-        midiInformation.parseXMLFile("topGun.xml");
+        midiInformation.parseXMLFile("TwinkleTwinkle.xml");
 /*
         for(MidiXMLData data : midiInformation.getPartInformation()){
             System.out.println("Part: " +data.getPart());

@@ -51,7 +51,8 @@ public class SongMaker {
         note_to_Integer.put("B",11);
 
         try {
-            this.sequence = new Sequence(Sequence.PPQ, 4);
+            this.sequence = new Sequence(Sequence.PPQ, 96);
+
         }catch(InvalidMidiDataException imde){
             this.sequence = null;
             System.out.println("Something went wrong.");
