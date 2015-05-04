@@ -5,9 +5,10 @@
  */
 public class Main {
     public static void main(String[] args){
-
+        /*
         XMLMidiInformation midiInformation = new XMLMidiInformation();
         midiInformation.parseXMLFile("TwinkleTwinkle.xml");
+        */
 /*
         for(MidiXMLData data : midiInformation.getPartInformation()){
             System.out.println("Part: " +data.getPart());
@@ -23,9 +24,8 @@ public class Main {
             System.out.println(midiKey.getKey());
         }
     */
-        SongMaker songMaker = new SongMaker(midiInformation.getKeyInformation());
-        songMaker.addParts(midiInformation.getPartInformation());
-        songMaker.startSong();
+        Display display = new Display();
+
 
     }
 }
