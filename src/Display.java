@@ -7,6 +7,8 @@ import org.w3c.dom.svg.SVGDocument;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -17,6 +19,7 @@ public class Display extends JFrame{
     private JTabbedPane tabbedPane;
     private JPanel midiPanel;
     private JButton playButton;
+    private JTextField fileName;
     private JSVGCanvas canvas;
     private DOMImplementation dom;
     private SVGGraphics2D generator;
@@ -31,6 +34,7 @@ public class Display extends JFrame{
         setContentPane(this.tabbedPane);
         setVisible(true);
 
+        this.tabbedPane.add(this.midiPanel,"Play MIDI");
 
         this.tabbedPane.add(scrollPane,"Visual Score");
 
@@ -49,7 +53,24 @@ public class Display extends JFrame{
         this.rootPanel.add("Center",this.canvas);
         pack();
 
+        this.playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XMLMidiInformation xmlparser = new XMLMidiInformation();
+                xmlparser.parseXMLFile(fileName.getText());
+                SongMaker songMaker = new SongMaker(xmlparser.getKeyInformation());
+                songMaker.addParts(xmlparser.getPartInformation());
+                songMaker.startSong();
+
+            }
+        });
+
+
     }
+
+
+
+
 
     public void createStaves(){
         Element root = this.document.getRootElement();
