@@ -14,6 +14,9 @@ import java.awt.*;
  */
 public class Display extends JFrame{
     private JPanel rootPanel;
+    private JTabbedPane tabbedPane;
+    private JPanel midiPanel;
+    private JButton playButton;
     private JSVGCanvas canvas;
     private DOMImplementation dom;
     private SVGGraphics2D generator;
@@ -24,11 +27,16 @@ public class Display extends JFrame{
     Display(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JScrollPane scrollPane = new JScrollPane(this.rootPanel);
-
-        setContentPane(scrollPane);
+        this.tabbedPane = new JTabbedPane();
+        setContentPane(this.tabbedPane);
         setVisible(true);
 
+
+        this.tabbedPane.add(scrollPane,"Visual Score");
+
         this.rootPanel.setLayout(new BorderLayout());
+
+
         this.canvas = new JSVGCanvas();
         this.canvas.setMySize(new Dimension(1000,1000));
 
