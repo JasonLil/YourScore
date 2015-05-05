@@ -44,7 +44,7 @@ public class Display extends JFrame{
     }
 
     public void createStaves(){
-        Element root = this.document.getDocumentElement();
+        Element root = this.document.getRootElement();
         root.setAttributeNS(null,"width","1000");
         root.setAttributeNS(null, "height", "1000");
 
