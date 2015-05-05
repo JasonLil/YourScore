@@ -85,11 +85,11 @@ public class SongMaker {
                     ShortMessage off = new ShortMessage();
 
                     if (partInfo.getOctave() == null) {
-                        ticker+=partInfo.getDuration();
+                        ticker+=partInfo.getDuration()*(30);
                     } else {
                         on.setMessage(onCodes[part - 1], MidiNotes[partInfo.getOctave()][note_to_Integer.get(partInfo.getNote())], 78);
                         track.add(new MidiEvent(on, ticker));
-                        ticker += partInfo.getDuration();
+                        ticker += partInfo.getDuration()*(30);
                         off.setMessage(onCodes[part - 1], MidiNotes[partInfo.getOctave()][note_to_Integer.get(partInfo.getNote())], 78);
                         track.add(new MidiEvent(off, ticker));
                     }
