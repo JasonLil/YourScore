@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 /**
@@ -20,12 +21,14 @@ public class Display extends JFrame{
     private JPanel midiPanel;
     private JButton playButton;
     private JTextField fileName;
+    private JTable partsTable;
     private JSVGCanvas canvas;
     private DOMImplementation dom;
     private SVGGraphics2D generator;
     private SVGDocument document;
     private String svgNS;
-
+    private ArrayList<MidiXMLData> partInformation;
+    private ArrayList<MidiXMLKey> keyInformation;
 
     Display(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +62,10 @@ public class Display extends JFrame{
                 XMLMidiInformation xmlparser = new XMLMidiInformation();
                 xmlparser.parseXMLFile(fileName.getText());
                 SongMaker songMaker = new SongMaker(xmlparser.getKeyInformation());
+
+                setPartInformation(xmlparser.getPartInformation());
+                setKeyInformation(xmlparser.getKeyInformation());
+
                 songMaker.addParts(xmlparser.getPartInformation());
                 songMaker.startSong();
 
@@ -105,5 +112,25 @@ public class Display extends JFrame{
 
     }
 
+    public void createNotes(ArrayList<MidiXMLData> inputInfo){
+        Integer cx = 10;
 
+    }
+
+
+    public ArrayList<MidiXMLData> getPartInformation() {
+        return partInformation;
+    }
+
+    public void setPartInformation(ArrayList<MidiXMLData> partInformation) {
+        this.partInformation = partInformation;
+    }
+
+    public ArrayList<MidiXMLKey> getKeyInformation() {
+        return keyInformation;
+    }
+
+    public void setKeyInformation(ArrayList<MidiXMLKey> keyInformation) {
+        this.keyInformation = keyInformation;
+    }
 }
