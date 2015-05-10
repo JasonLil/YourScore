@@ -22,6 +22,8 @@ public class Display extends JFrame{
     private JButton playButton;
     private JTextField fileName;
     private JTable partsTable;
+    private JButton addButton;
+    private JSlider tempoSlider;
     private JSVGCanvas canvas;
     private DOMImplementation dom;
     private SVGGraphics2D generator;
@@ -66,7 +68,7 @@ public class Display extends JFrame{
                 setPartInformation(xmlparser.getPartInformation());
                 setKeyInformation(xmlparser.getKeyInformation());
 
-                songMaker.addParts(xmlparser.getPartInformation());
+                songMaker.addParts(xmlparser.getPartInformation(),tempoSlider.getValue());
                 songMaker.startSong();
 
             }

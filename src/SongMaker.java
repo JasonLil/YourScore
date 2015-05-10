@@ -61,7 +61,7 @@ public class SongMaker {
 
 
     //This method adds a part from the MusicXML. The parts are enumerated and named (such as Trombone ...)
-    public void addParts(ArrayList<MidiXMLData> partInformation){
+    public void addParts(ArrayList<MidiXMLData> partInformation, Integer beats_per_minute){
         Track track=null;
         //This keeps track of if the partInfo.getPart is different
         Integer part = -1;
@@ -85,11 +85,13 @@ public class SongMaker {
                     ShortMessage off = new ShortMessage();
 
                     if (partInfo.getOctave() == null) {
-                        ticker+=partInfo.getDuration()*(30);
+                        //I am going off of http://stackoverflow.com/questions/2038313/midi-ticks-to-actual-playback-seconds-midi-music this
+                        //stackoverflow post for seconds per tick, but also based on sound added the *2
+                        ticker+=partInfo.getDuration()*(60000/(beats_per_minute*96)*2);
                     } else {
                         on.setMessage(onCodes[part - 1], MidiNotes[partInfo.getOctave()][note_to_Integer.get(partInfo.getNote())], 78);
                         track.add(new MidiEvent(on, ticker));
-                        ticker += partInfo.getDuration()*(30);
+                        ticker += partInfo.getDuration()*(60000/(beats_per_minute*96)*2);
                         off.setMessage(onCodes[part - 1], MidiNotes[partInfo.getOctave()][note_to_Integer.get(partInfo.getNote())], 78);
                         track.add(new MidiEvent(off, ticker));
                     }

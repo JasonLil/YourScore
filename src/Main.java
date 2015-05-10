@@ -27,6 +27,7 @@ public class Main {
             System.out.println(midiKey.getKey());
         }
         */
+    Display display = new Display();
 
 
     }
