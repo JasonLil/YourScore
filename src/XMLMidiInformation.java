@@ -44,6 +44,7 @@ public class XMLMidiInformation {
             ScorePartwise XMLPartwise = (ScorePartwise) unmarshaller.unmarshal(source);
             int part_num =0;
             this.songName = XMLPartwise.getWork().getWorkTitle();
+
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;
 
@@ -54,6 +55,7 @@ public class XMLMidiInformation {
                         if(o.getClass().equals(Attributes.class)){
                             MidiXMLKey midiXMLKey = new MidiXMLKey();
                             Attributes attributes = (Attributes)o;
+                            System.out.println("Time: "+ attributes.getTime().get(0).getInterchangeable().getSymbol().value());
                             if(attributes.getKey().size()>0) {
                                 midiXMLKey.setKey(attributes.getKey().get(0).getFifths().intValue());
                                 midiXMLKey.setMeasure(Integer.parseInt(measure.getNumber()));
