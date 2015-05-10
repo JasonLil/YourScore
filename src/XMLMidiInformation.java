@@ -48,7 +48,7 @@ public class XMLMidiInformation {
                 this.songName = XMLPartwise.getWork().getWorkTitle();
             }catch(NullPointerException npe){
 
-                this.songName = "Song Name was null.";
+                this.songName = filename;
             }
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;

@@ -79,7 +79,7 @@ public class SongMaker {
                     track = this.sequence.createTrack();
                 }
                 this.createNoteToInteger(partInfo.getPart(),partInfo.getMeasure());
-
+                //Looked at various online examples including this one:http://www.coderanch.com/t/587562/java/java/Midi-Head-Java
                 if (track != null) {
                     ShortMessage on = new ShortMessage();
                     ShortMessage off = new ShortMessage();
