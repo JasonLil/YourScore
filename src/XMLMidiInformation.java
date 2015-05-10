@@ -26,6 +26,7 @@ public class XMLMidiInformation {
     XMLMidiInformation(){
         this.partInformation = new ArrayList<MidiXMLData>();
         this.keyInformation = new ArrayList<MidiXMLKey>();
+        this.songName = new String();
     }
 
     public void parseXMLFile(String filename){
@@ -43,8 +44,12 @@ public class XMLMidiInformation {
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             ScorePartwise XMLPartwise = (ScorePartwise) unmarshaller.unmarshal(source);
             int part_num =0;
-            this.songName = XMLPartwise.getWork().getWorkTitle();
+            try {
+                this.songName = XMLPartwise.getWork().getWorkTitle();
+            }catch(NullPointerException npe){
 
+                this.songName = "Song Name was null.";
+            }
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;
 
