@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class XMLMidiInformation {
     private ArrayList<MidiXMLData> partInformation;
     private ArrayList<MidiXMLKey> keyInformation;
+    private String songName;
 
     XMLMidiInformation(){
         this.partInformation = new ArrayList<MidiXMLData>();
@@ -42,7 +43,7 @@ public class XMLMidiInformation {
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             ScorePartwise XMLPartwise = (ScorePartwise) unmarshaller.unmarshal(source);
             int part_num =0;
-            XMLPartwise.getWork().getWorkTitle();
+            this.songName = XMLPartwise.getWork().getWorkTitle();
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;
 
