@@ -6,6 +6,10 @@ public class MidiXMLKey {
     private Integer key;//corresponds to the circle of fifths http://en.wikipedia.org/wiki/Circle_of_fifths where 0 is C Major, 1 is G Major
     private Integer measure;
 
+
+
+
+
     public Integer getPart() {
         return part;
     }

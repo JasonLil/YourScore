@@ -6,7 +6,13 @@
 public class Main {
     public static void main(String[] args){
 
-/*
+    XMLMidiInformation midiInformation = new XMLMidiInformation();
+        midiInformation.parseXMLFile("topGun.xml");
+
+
+
+
+        /*
         for(MidiXMLData data : midiInformation.getPartInformation()){
             System.out.println("Part: " +data.getPart());
             System.out.println("Measure: "+ data.getMeasure());
@@ -20,8 +26,7 @@ public class Main {
             System.out.println(midiKey.getMeasure());
             System.out.println(midiKey.getKey());
         }
-    */
-    Display display = new Display();
+        */
 
 
     }

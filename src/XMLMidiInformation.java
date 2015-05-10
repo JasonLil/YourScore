@@ -42,13 +42,14 @@ public class XMLMidiInformation {
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             ScorePartwise XMLPartwise = (ScorePartwise) unmarshaller.unmarshal(source);
             int part_num =0;
-
+            XMLPartwise.getWork().getWorkTitle();
             for (ScorePartwise.Part part : XMLPartwise.getPart()) {
                 part_num++;
 
                 for (ScorePartwise.Part.Measure measure : part.getMeasure()) {
 
                     for (Object o : measure.getNoteOrBackupOrForward()) {
+
                         if(o.getClass().equals(Attributes.class)){
                             MidiXMLKey midiXMLKey = new MidiXMLKey();
                             Attributes attributes = (Attributes)o;
