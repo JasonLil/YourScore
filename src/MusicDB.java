@@ -107,6 +107,58 @@ public class MusicDB {
     }
 
 
+    public ArrayList<MidiXMLData> getMeasureInfo(int[] rows){
+        ArrayList<MidiXMLData> musicInfo = new ArrayList<MidiXMLData>();
+        try{
+            this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
+            for(Integer p : rows) {
+                PreparedStatement ps = this.conn.prepareStatement("SELECT m.measure_num as m, m.octave as o, m.note as n, m.duration as d, p.part as p from parts as p join measures as m on p.part_id=m.part_id where p.part_id=(?)");
+                ps.setInt(1, p);
+                this.rs = ps.executeQuery();
+                while(this.rs.next()){
+                    MidiXMLData data = new MidiXMLData();
+                    data.setPart(this.rs.getInt("p"));
+                    data.setDuration(this.rs.getInt("d"));
+                    data.setMeasure(this.rs.getInt("m"));
+                    data.setNote(this.rs.getString("n"));
+                    data.setOctave(this.rs.getInt("o"));
+                    musicInfo.add(data);
+                }
+            }
+
+
+        }catch(SQLException se){
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
+        }
+        return musicInfo;
+    }
+
+    public ArrayList<MidiXMLKey> getKeyInfo(int[] rows){
+        ArrayList<MidiXMLKey> musicInfo = new ArrayList<MidiXMLKey>();
+        try{
+            this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
+            for(Integer p : rows) {
+                PreparedStatement ps = this.conn.prepareStatement("SELECT k.part as p, k.measure as m, k.key_int as ke from keys as k join parts as p on p.part_id=k.part_id where p.part_id=(?)");
+                ps.setInt(1, p);
+                this.rs = ps.executeQuery();
+                while(this.rs.next()){
+                    MidiXMLKey data = new MidiXMLKey();
+                    data.setKey(this.rs.getInt("ke"));
+                    data.setMeasure(this.rs.getInt("m"));
+                    data.setPart(this.rs.getInt("p"));
+                    musicInfo.add(data);
+                }
+            }
+
+
+        }catch(SQLException se){
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
+        }
+        return musicInfo;
+    }
+
+
+
     public ResultSet getResultSet(){
         try {
             this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);

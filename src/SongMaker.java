@@ -1,4 +1,5 @@
 import javax.sound.midi.*;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,6 +8,7 @@ import java.util.HashMap;
  */
 public class SongMaker {
     private Sequence sequence;
+    private Sequencer sequencer;
     private static final Integer[][] MidiNotes; //MidiNotes is based off of this http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm chart
     private static final Integer[] onCodes; //on and off codes are based off of Table 2 from this page :http://www.midi.org/techspecs/midimessages.php
     private static final Integer[] offCodes;
@@ -52,15 +54,19 @@ public class SongMaker {
 
         try {
             this.sequence = new Sequence(Sequence.PPQ, 96);
+            this.sequencer = MidiSystem.getSequencer();
 
         }catch(InvalidMidiDataException imde){
             this.sequence = null;
             System.out.println("Something went wrong.");
+
+        }catch(MidiUnavailableException mue){
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"Midi is unavailable.");
         }
     }
 
 
-    //This method adds a part from the MusicXML. The parts are enumerated and named (such as Trombone ...)
+    //This method adds a part from the MusicXML.
     public void addParts(ArrayList<MidiXMLData> partInformation, Integer beats_per_minute){
         Track track=null;
         //This keeps track of if the partInfo.getPart is different
@@ -84,7 +90,7 @@ public class SongMaker {
                     ShortMessage on = new ShortMessage();
                     ShortMessage off = new ShortMessage();
 
-                    if (partInfo.getNote()=="r") {
+                    if (partInfo.getOctave()==0) {
                         //I am going off of http://stackoverflow.com/questions/2038313/midi-ticks-to-actual-playback-seconds-midi-music this
                         //stackoverflow post for seconds per tick, but also based on sound added the *2
                         ticker+=partInfo.getDuration()*(60000/(beats_per_minute*96)*2);
@@ -105,16 +111,21 @@ public class SongMaker {
 
     public void startSong(){
         try {
-            Sequencer sequencer = MidiSystem.getSequencer();
-            sequencer.open();
-            sequencer.setSequence(this.sequence);
-            sequencer.start();
+
+            this.sequencer.open();
+            this.sequencer.setSequence(this.sequence);
+            this.sequencer.start();
 
         }catch(MidiUnavailableException mue){
             System.out.println("You don't have midi available on your system.");
         }catch(InvalidMidiDataException imde){
             System.out.println("There is something wrong with the data.");
         }
+    }
+
+    public void stopSong(){
+        this.sequencer.close();
+
     }
 
 

@@ -73,16 +73,28 @@ public class Display extends JFrame{
         this.playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                XMLMidiInformation xmlparser = new XMLMidiInformation();
-                xmlparser.parseXMLFile(fileName.getText());
-                SongMaker songMaker = new SongMaker(xmlparser.getKeyInformation());
+                int[] rows = partsTable.getSelectedRows();
+                ArrayList<MidiXMLKey> keyInfo = new ArrayList<MidiXMLKey>();
+                ArrayList<MidiXMLData> musicInfo = new ArrayList<MidiXMLData>();
+                keyInfo.addAll(musicDB.getKeyInfo(rows));
+                musicInfo.addAll(musicDB.getMeasureInfo(rows));
+                for(MidiXMLData k : musicInfo){
+                    System.out.println(k.getPart());
+                    System.out.println(k.getNote());
+                    System.out.println(k.getOctave());
+                }
 
-                setPartInformation(xmlparser.getPartInformation());
-                setKeyInformation(xmlparser.getKeyInformation());
+                SongMaker songMaker = new SongMaker(keyInfo);
 
-                songMaker.addParts(xmlparser.getPartInformation(),tempoSlider.getValue());
-                songMaker.startSong();
+                songMaker.addParts(musicInfo,tempoSlider.getValue());
 
+                if(playButton.getText().equals("Play")) {
+                    playButton.setText("Stop");
+                    songMaker.startSong();
+                }else{
+                    playButton.setText("Play");
+                    songMaker.stopSong();
+                }
             }
         });
 
@@ -95,6 +107,8 @@ public class Display extends JFrame{
                 musicDataTable.fireTableDataChanged();
             }
         });
+
+
 
 
     }
