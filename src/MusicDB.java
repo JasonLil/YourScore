@@ -39,7 +39,7 @@ public class MusicDB {
 
 
 
-            PreparedStatement ps_measures = conn.prepareStatement("INSERT INTO measures (measure_num,octave,note, duration,)");
+            PreparedStatement ps_measures = conn.prepareStatement("INSERT INTO measures (measure_num,octave,note, duration,part_id) VALUES (?,?,?,?,?)");
             PreparedStatement ps_keys = conn.prepareStatement("INSERT INTO keys (part_id, ,part, key_int, measure) VALUES (?,?,?,?)");
 
             Integer part_id;
@@ -59,7 +59,21 @@ public class MusicDB {
                     ps.executeUpdate();
                     part = midiXMLData.getPart();
                 }
+                ps_measures.setInt(1,midiXMLData.getMeasure());
+                ps_measures.setInt(2,midiXMLData.getOctave());
+                ps_measures.setString(3,midiXMLData.getNote());
+                ps_measures.setInt(4, midiXMLData.getDuration());
+                ps_measures.setInt(5, part_for_first);
+                part_for_first++;
+                ps_measures.executeUpdate();
+            }
 
+            for(MidiXMLKey midiXMLKey : keyData){
+                ps_keys.setInt(1,part_id);
+                ps_keys.setInt(2,midiXMLKey.getPart());
+                ps_keys.setInt(3, midiXMLKey.getKey());
+                ps_keys.setInt(4, midiXMLKey.getMeasure());
+                ps_keys.executeUpdate();
             }
 
 
@@ -71,7 +85,19 @@ public class MusicDB {
     }
 
 
+    public ResultSet getResultSet(){
+        ResultSet rs = null;
+        try {
+            this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
+            statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            rs = statement.executeQuery("SELECT song_name, part from parts");
 
+
+        }catch(SQLException se){
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "There was a database problem.");
+        }
+        return rs;
+    }
 
 
 

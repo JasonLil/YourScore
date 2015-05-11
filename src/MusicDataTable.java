@@ -14,6 +14,7 @@ public class MusicDataTable extends AbstractTableModel {
     }
 
 
+
     @Override
     public int getRowCount(){
         int count = 0;
@@ -39,7 +40,7 @@ public class MusicDataTable extends AbstractTableModel {
 
         }catch(SQLException se){
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
-            return null;
+            return "Not right.";
         }
 
     }
@@ -50,7 +51,7 @@ public class MusicDataTable extends AbstractTableModel {
             return this.resultSet.getMetaData().getColumnCount();
         }catch(SQLException se){
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
-            return 0;
+            return 1;
         }
     }
 

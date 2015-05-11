@@ -3,6 +3,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import javax.swing.*;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -117,7 +118,7 @@ public class XMLMidiInformation {
         }catch(SAXException saxe){
             System.out.println(saxe.toString());
         }catch(FileNotFoundException fnfe){
-            System.out.println("Please correctly identify the filename.");
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"Please correcly identify the file.");
         }
     }
 
@@ -127,5 +128,13 @@ public class XMLMidiInformation {
 
     public ArrayList<MidiXMLKey> getKeyInformation() {
         return keyInformation;
+    }
+
+    public String getSongName() {
+        return songName;
+    }
+
+    public void setSongName(String songName) {
+        this.songName = songName;
     }
 }

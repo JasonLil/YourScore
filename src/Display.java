@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 
@@ -31,6 +32,7 @@ public class Display extends JFrame{
     private String svgNS;
     private ArrayList<MidiXMLData> partInformation;
     private ArrayList<MidiXMLKey> keyInformation;
+    private static MusicDB musicDB;
 
     Display(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,6 +40,11 @@ public class Display extends JFrame{
         this.tabbedPane = new JTabbedPane();
         setContentPane(this.tabbedPane);
         setVisible(true);
+
+        this.partsTable.setGridColor(Color.BLACK);
+        this.musicDB = new MusicDB();
+        this.musicDB.setup();
+        this.partsTable.setModel(new MusicDataTable(this.musicDB.getResultSet()));
 
         this.tabbedPane.add(this.midiPanel,"Play MIDI");
 
@@ -50,6 +57,9 @@ public class Display extends JFrame{
         this.canvas.setMySize(new Dimension(1000,1000));
 
 
+
+
+        //This part is taken from Java Drawing with Apache Batik
         this.dom = SVGDOMImplementation.getDOMImplementation();
         this.svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
         this.document = (SVGDocument)this.dom.createDocument(svgNS,"svg", null);
@@ -71,6 +81,15 @@ public class Display extends JFrame{
                 songMaker.addParts(xmlparser.getPartInformation(),tempoSlider.getValue());
                 songMaker.startSong();
 
+            }
+        });
+
+        this.addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XMLMidiInformation xmlparser = new XMLMidiInformation();
+                xmlparser.parseXMLFile(fileName.getText());
+                musicDB.populateFromFile(xmlparser.getPartInformation(),xmlparser.getKeyInformation(),xmlparser.getSongName());
             }
         });
 
