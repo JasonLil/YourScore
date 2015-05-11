@@ -19,11 +19,14 @@ public class MusicDataTable extends AbstractTableModel {
     public int getRowCount(){
         int count = 0;
         try {
-            this.resultSet.beforeFirst();
-            while(this.resultSet.next()){
-                count++;
+            if(this.resultSet==null){
+                return 0;
+            }else {
+                this.resultSet.beforeFirst();
+                while (this.resultSet.next()) {
+                    count++;
+                }
             }
-
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
         }
@@ -48,7 +51,11 @@ public class MusicDataTable extends AbstractTableModel {
     @Override
     public int getColumnCount(){
         try{
-            return this.resultSet.getMetaData().getColumnCount();
+            if(this.resultSet==null){
+                return 1;
+            }else {
+                return this.resultSet.getMetaData().getColumnCount();
+            }
         }catch(SQLException se){
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
             return 1;

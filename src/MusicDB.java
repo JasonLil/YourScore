@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class MusicDB {
     private final String PROTOCOL = "jdbc:derby:";
-    private final String DB_NAME = "movieDB";
+    private final String DB_NAME = "yourScoreDB";
     private final String USER = "user";
     private final String PASS = "password";
 
@@ -21,11 +21,13 @@ public class MusicDB {
             conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
 
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-            statement.executeUpdate("CREATE TABLE parts (part_id Integer (START WITH 1, INCREMENT BY 1), part INTEGER, key INTEGER , song_name CHAR(20))");
-            statement.executeUpdate("CREATE TABLE measures (measure_num INTEGER, octave INTEGER, note CHAR(1), duration INTEGER, part_id INTEGER, FOREIGN KEY part_id REFERENCES parts(part_id))");
-            statement.executeUpdate("CREATE TABLE keys (part_id INTEGER ,part INTEGER ,key_int INTEGER, measure INTEGER (FOREIGN KEY part_id REFERENCES parts(part_id)))");
-
+            try {
+                statement.executeUpdate("CREATE TABLE parts (part_id Integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), part INTEGER, song_name CHAR(20), PRIMARY KEY (part_id))");
+                statement.executeUpdate("CREATE TABLE measures (measure_num INTEGER, octave INTEGER, note CHAR(1), duration INTEGER, part_id INTEGER, FOREIGN KEY (part_id) REFERENCES parts(part_id))");
+                statement.executeUpdate("CREATE TABLE keys (part_id INTEGER ,part INTEGER ,key_int INTEGER, measure INTEGER, FOREIGN KEY (part_id) REFERENCES parts(part_id))");
+            }catch(SQLException sqle){
+                System.out.println(sqle.toString());
+            }
         }catch(SQLException se){
             System.out.println("You have already made the database.");
         }
@@ -35,12 +37,12 @@ public class MusicDB {
         try{
             conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
 
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO parts (part, name) VALUES (?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO parts (part, song_name) VALUES (?,?)");
 
 
 
             PreparedStatement ps_measures = conn.prepareStatement("INSERT INTO measures (measure_num,octave,note, duration,part_id) VALUES (?,?,?,?,?)");
-            PreparedStatement ps_keys = conn.prepareStatement("INSERT INTO keys (part_id, ,part, key_int, measure) VALUES (?,?,?,?)");
+            PreparedStatement ps_keys = conn.prepareStatement("INSERT INTO keys (part_id,part, key_int, measure) VALUES (?,?,?,?)");
 
             Integer part_id;
             ResultSet resultSet = statement.executeQuery("Select MAX(part_id) as max_pid from parts");
@@ -80,23 +82,23 @@ public class MusicDB {
 
 
         }catch(SQLException se){
+            System.out.println(se.toString());
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"There was a database problem.");
         }
     }
 
 
     public ResultSet getResultSet(){
-        ResultSet rs = null;
         try {
             this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
             statement = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            rs = statement.executeQuery("SELECT song_name, part from parts");
+            this.rs = statement.executeQuery("SELECT song_name, part from parts");
 
 
         }catch(SQLException se){
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "There was a database problem.");
         }
-        return rs;
+        return this.rs;
     }
 
 
