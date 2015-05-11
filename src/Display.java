@@ -33,6 +33,7 @@ public class Display extends JFrame{
     private ArrayList<MidiXMLData> partInformation;
     private ArrayList<MidiXMLKey> keyInformation;
     private static MusicDB musicDB;
+    private static MusicDataTable musicDataTable;
 
     Display(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +45,8 @@ public class Display extends JFrame{
         this.partsTable.setGridColor(Color.BLACK);
         this.musicDB = new MusicDB();
         this.musicDB.setup();
-        this.partsTable.setModel(new MusicDataTable(this.musicDB.getResultSet()));
+        musicDataTable = new MusicDataTable(musicDB.getResultSet());
+        this.partsTable.setModel(musicDataTable);
 
         this.tabbedPane.add(this.midiPanel,"Play MIDI");
 
@@ -90,6 +92,7 @@ public class Display extends JFrame{
                 XMLMidiInformation xmlparser = new XMLMidiInformation();
                 xmlparser.parseXMLFile(fileName.getText());
                 musicDB.populateFromFile(xmlparser.getPartInformation(),xmlparser.getKeyInformation(),xmlparser.getSongName());
+                partsTable.repaint();
             }
         });
 

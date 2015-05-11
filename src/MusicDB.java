@@ -22,7 +22,7 @@ public class MusicDB {
 
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             try {
-                statement.executeUpdate("CREATE TABLE parts (part_id Integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), part INTEGER, song_name CHAR(20), PRIMARY KEY (part_id))");
+                statement.executeUpdate("CREATE TABLE parts (part_id Integer NOT NULL, part INTEGER, song_name CHAR(20), PRIMARY KEY (part_id))");
                 statement.executeUpdate("CREATE TABLE measures (measure_num INTEGER, octave INTEGER, note CHAR(1), duration INTEGER, part_id INTEGER, FOREIGN KEY (part_id) REFERENCES parts(part_id))");
                 statement.executeUpdate("CREATE TABLE keys (part_id INTEGER ,part INTEGER ,key_int INTEGER, measure INTEGER, FOREIGN KEY (part_id) REFERENCES parts(part_id))");
             }catch(SQLException sqle){
@@ -37,7 +37,7 @@ public class MusicDB {
         try{
             conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
 
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO parts (part, song_name) VALUES (?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO parts (part_id,part, song_name) VALUES (?,?,?)");
 
 
 
@@ -57,11 +57,13 @@ public class MusicDB {
             for(MidiXMLData midiXMLData : musicData){
 
                 if(part != midiXMLData.getPart()){
-                    ps.setString(2,songName);
-                    ps.setInt(1, midiXMLData.getPart());
+                    part_for_first++;
+                    ps.setString(3,songName);
+                    ps.setInt(2, midiXMLData.getPart());
+                    ps.setInt(1,part_for_first);
                     ps.executeUpdate();
                     part = midiXMLData.getPart();
-                    part_for_first++;
+
                 }
                 if(midiXMLData.getNote()=="r") {
                     ps_measures.setInt(1, midiXMLData.getMeasure());
