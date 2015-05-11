@@ -92,7 +92,7 @@ public class Display extends JFrame{
                 XMLMidiInformation xmlparser = new XMLMidiInformation();
                 xmlparser.parseXMLFile(fileName.getText());
                 musicDB.populateFromFile(xmlparser.getPartInformation(),xmlparser.getKeyInformation(),xmlparser.getSongName());
-                partsTable.repaint();
+                musicDataTable.fireTableDataChanged();
             }
         });
 
