@@ -39,9 +39,9 @@ public class SongMaker {
     }
 
 
-    SongMaker(ArrayList<MidiXMLKey> keyInfo){
+    SongMaker(){
         this.currentKeyChange = 0;
-        this.keyInformation = keyInfo;
+
 
         note_to_Integer = new HashMap<String, Integer>();
         note_to_Integer.put("C",0);
@@ -65,6 +65,9 @@ public class SongMaker {
         }
     }
 
+    public void setKeyInformation(ArrayList<MidiXMLKey> keyInformation){
+        this.keyInformation = keyInformation;
+    }
 
     //This method adds a part from the MusicXML.
     public void addParts(ArrayList<MidiXMLData> partInformation, Integer beats_per_minute){

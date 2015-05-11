@@ -34,6 +34,8 @@ public class Display extends JFrame{
     private ArrayList<MidiXMLKey> keyInformation;
     private static MusicDB musicDB;
     private static MusicDataTable musicDataTable;
+    private static SongMaker songMaker;
+
 
     Display(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,7 +60,7 @@ public class Display extends JFrame{
         this.canvas = new JSVGCanvas();
         this.canvas.setMySize(new Dimension(1000,1000));
 
-
+        songMaker = new SongMaker();
 
 
         //This part is taken from Java Drawing with Apache Batik
@@ -84,12 +86,14 @@ public class Display extends JFrame{
                     System.out.println(k.getOctave());
                 }
 
-                SongMaker songMaker = new SongMaker(keyInfo);
-
-                songMaker.addParts(musicInfo,tempoSlider.getValue());
 
                 if(playButton.getText().equals("Play")) {
                     playButton.setText("Stop");
+
+                    songMaker.setKeyInformation(keyInfo);
+
+                    songMaker.addParts(musicInfo,tempoSlider.getValue());
+
                     songMaker.startSong();
                 }else{
                     playButton.setText("Play");

@@ -113,7 +113,7 @@ public class MusicDB {
             this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
             for(Integer p : rows) {
                 PreparedStatement ps = this.conn.prepareStatement("SELECT m.measure_num as m, m.octave as o, m.note as n, m.duration as d, p.part as p from parts as p join measures as m on p.part_id=m.part_id where p.part_id=(?)");
-                ps.setInt(1, p);
+                ps.setInt(1, p+1);
                 this.rs = ps.executeQuery();
                 while(this.rs.next()){
                     MidiXMLData data = new MidiXMLData();
@@ -139,7 +139,7 @@ public class MusicDB {
             this.conn = DriverManager.getConnection(PROTOCOL + DB_NAME + ";create=true", USER, PASS);
             for(Integer p : rows) {
                 PreparedStatement ps = this.conn.prepareStatement("SELECT k.part as p, k.measure as m, k.key_int as ke from keys as k join parts as p on p.part_id=k.part_id where p.part_id=(?)");
-                ps.setInt(1, p);
+                ps.setInt(1, p+1);
                 this.rs = ps.executeQuery();
                 while(this.rs.next()){
                     MidiXMLKey data = new MidiXMLKey();
