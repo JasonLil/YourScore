@@ -34,7 +34,6 @@ public class XMLMidiInformation {
         try {
             JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class);
             SAXParserFactory spf = SAXParserFactory.newInstance();
-            //The next line is giving an error now that the dependencies have changed with Batik... I'm not sure it's needed.
             /*
             spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
             */
@@ -101,7 +100,7 @@ public class XMLMidiInformation {
                                     octave = p.getOctave();
                                     note = p.getStep().value();
                                 } else if (j.getValue().getClass().equals(Rest.class)) {
-                                    note = "rest";
+                                    note = "r";
                                 }
 
 

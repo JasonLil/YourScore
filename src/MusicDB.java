@@ -51,6 +51,7 @@ public class MusicDB {
             }else{
                 part_id = resultSet.getInt("max_pid");
             }
+            System.out.println("Part_Id :"+part_id);
             Integer part_for_first = part_id;
             Integer part = -1;
             for(MidiXMLData midiXMLData : musicData){
@@ -60,22 +61,38 @@ public class MusicDB {
                     ps.setInt(1, midiXMLData.getPart());
                     ps.executeUpdate();
                     part = midiXMLData.getPart();
+                    part_for_first++;
                 }
-                ps_measures.setInt(1,midiXMLData.getMeasure());
-                ps_measures.setInt(2,midiXMLData.getOctave());
-                ps_measures.setString(3,midiXMLData.getNote());
-                ps_measures.setInt(4, midiXMLData.getDuration());
-                ps_measures.setInt(5, part_for_first);
-                part_for_first++;
-                ps_measures.executeUpdate();
-            }
+                if(midiXMLData.getNote()=="r") {
+                    ps_measures.setInt(1, midiXMLData.getMeasure());
+                    ps_measures.setInt(2, 0);
+                    ps_measures.setString(3, midiXMLData.getNote());
+                    ps_measures.setInt(4, midiXMLData.getDuration());
+                    ps_measures.setInt(5, part_for_first);
 
+                    ps_measures.executeUpdate();
+                }else{
+                    ps_measures.setInt(1, midiXMLData.getMeasure());
+                    ps_measures.setInt(2, midiXMLData.getOctave());
+                    ps_measures.setString(3, midiXMLData.getNote());
+                    ps_measures.setInt(4, midiXMLData.getDuration());
+                    ps_measures.setInt(5, part_for_first);
+                    ps_measures.executeUpdate();
+                }
+            }
+            Integer p = -1;
             for(MidiXMLKey midiXMLKey : keyData){
+                if(p!=midiXMLKey.getPart()) {
+                    part_id++;
+                    p=midiXMLKey.getPart();
+                }
+
                 ps_keys.setInt(1,part_id);
                 ps_keys.setInt(2,midiXMLKey.getPart());
                 ps_keys.setInt(3, midiXMLKey.getKey());
                 ps_keys.setInt(4, midiXMLKey.getMeasure());
                 ps_keys.executeUpdate();
+
             }
 
 

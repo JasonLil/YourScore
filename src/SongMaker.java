@@ -84,7 +84,7 @@ public class SongMaker {
                     ShortMessage on = new ShortMessage();
                     ShortMessage off = new ShortMessage();
 
-                    if (partInfo.getOctave() == null) {
+                    if (partInfo.getNote()=="r") {
                         //I am going off of http://stackoverflow.com/questions/2038313/midi-ticks-to-actual-playback-seconds-midi-music this
                         //stackoverflow post for seconds per tick, but also based on sound added the *2
                         ticker+=partInfo.getDuration()*(60000/(beats_per_minute*96)*2);
