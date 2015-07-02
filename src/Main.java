@@ -6,10 +6,6 @@
 public class Main {
     public static void main(String[] args){
 
-    XMLMidiInformation midiInformation = new XMLMidiInformation();
-        midiInformation.parseXMLFile("AveMaria.xml");
-
-
     Display display = new Display();
 
 

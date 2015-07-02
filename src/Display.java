@@ -73,7 +73,6 @@ public class Display extends JFrame{
         pack();
 
         this.playButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 int[] rows = partsTable.getSelectedRows();
                 ArrayList<MidiXMLKey> keyInfo = new ArrayList<MidiXMLKey>();
@@ -103,7 +102,6 @@ public class Display extends JFrame{
         });
 
         this.addButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 XMLMidiInformation xmlparser = new XMLMidiInformation();
                 xmlparser.parseXMLFile(fileName.getText());
